@@ -5,7 +5,6 @@ const path = require('path');
 const usersPath = path.join('./data', 'users.json');
 const cardsPath = path.join('./data', 'cards.json');
 
-
 fs.readFile(usersPath, { encoding: 'utf8' }, (err, data) => {
   if (err) {
     console.log(err);
@@ -41,11 +40,17 @@ fs.readFile(cardsPath, { encoding: 'utf8' }, (err, data) => {
   }
 
   const cards = JSON.parse(data);
-
+  const usersRoute = 'users';
+  const cardsRoute = 'cards';
   const cardList = (req, res) => {
-    res.send(cards);
+
+    if (req.params.cards !== usersRoute && req.params.cards !== cardsRoute) {
+      res.send({ message: 'Запрашиваемый ресурс не найден' });
+    } else {
+      res.send(cards);
+    }
   };
-  router.get('/cards/', cardList);
+  router.get('/:cards/', cardList);
 });
 
 module.exports = router;

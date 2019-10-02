@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const routes = require('./routes/routes');
 
-const { PORT = 3000, BASE_PATH } = process.env;
+const { PORT = 3000 } = process.env;
 
 const app = express();
 
