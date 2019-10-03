@@ -11,6 +11,6 @@ const errorPage = (req, res) => {
 router.get('/users/', userList);
 router.get('/users/:id', sendUser);
 router.get('/cards/', cardList);
-router.get('*', errorPage)
+router.get('*', errorPage);
 
 module.exports = router;
