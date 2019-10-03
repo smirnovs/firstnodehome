@@ -11,9 +11,9 @@ const cardList = (req, res) => {
     }
     const cards = JSON.parse(data);
     res.send(cards);
-  })
+  });
 };
 
 module.exports = {
-  cardList
+  cardList,
 };
