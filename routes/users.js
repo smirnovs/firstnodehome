@@ -22,7 +22,7 @@ const userList = (req, res) => {
 const sendUser = (req, res) => {
   const { id } = req.params;
   usersFile.then((data) => {
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i += 1) {
       if (data[i]._id === id) {
         res.send(data[i]);
         return;
