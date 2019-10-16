@@ -1,6 +1,7 @@
 const router = require('express').Router();
-const { userList, sendUser } = require('./users');
-const { cardList } = require('./cards');
+// const { userList, getUser, createUser } = require('./users');
+const { getUsers, createUser } = require('../controllers/users');
+// const { cardList } = require('./cards');
 
 
 const errorPage = (req, res) => {
@@ -8,9 +9,10 @@ const errorPage = (req, res) => {
   res.send({ message: 'Запрашиваемый ресурс не найден' });
 };
 
-router.get('/users/', userList);
-router.get('/users/:id', sendUser);
-router.get('/cards/', cardList);
+router.get('/users', getUsers);
+// router.get('/users/:id', getUser);
+router.post('/users', createUser);
+// router.get('/cards/', cardList);
 router.get('*', errorPage);
 
 module.exports = router;

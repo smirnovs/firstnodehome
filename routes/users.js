@@ -19,7 +19,7 @@ const userList = (req, res) => {
   }).catch((error) => { throw error; });
 };
 
-const sendUser = (req, res) => {
+const oneUser = (req, res) => {
   const { id } = req.params;
   usersFile.then((data) => {
     for (let i = 0; i < data.length; i += 1) {
@@ -36,5 +36,5 @@ const sendUser = (req, res) => {
 
 module.exports = {
   userList,
-  sendUser,
+  oneUser,
 };
