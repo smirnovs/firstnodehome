@@ -1,7 +1,10 @@
 const router = require('express').Router();
-// const { userList, getUser, createUser } = require('./users');
-const { getUsers, createUser } = require('../controllers/users');
-// const { cardList } = require('./cards');
+const {
+  getUsers, getUser, createUser, updateUser, updateAvatar,
+} = require('../controllers/users');
+const {
+  getCards, getCard, createCard, deleteCard, likeCard, dislikeCard,
+} = require('../controllers/cards');
 
 
 const errorPage = (req, res) => {
@@ -10,9 +13,18 @@ const errorPage = (req, res) => {
 };
 
 router.get('/users', getUsers);
-// router.get('/users/:id', getUser);
+router.get('/users/:userId', getUser);
 router.post('/users', createUser);
-// router.get('/cards/', cardList);
+router.patch('/users/me', updateUser);
+router.patch('/users/me/avatar', updateAvatar);
+
+
+router.get('/cards', getCards);
+router.get('/cards/:cardId', getCard);
+router.post('/cards', createCard);
+router.delete('/cards/:cardId', deleteCard);
+router.put('/cards/:cardId/likes', likeCard);
+router.delete('/cards/:cardId/likes', dislikeCard);
 router.get('*', errorPage);
 
 module.exports = router;

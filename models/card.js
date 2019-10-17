@@ -33,4 +33,4 @@ cardSchema.path('link').validate((val) => {
 }, 'Карточка должен быть в виде ссылки на изображение.');
 
 
-module.exports = mongoose.model('user', cardSchema);
+module.exports = mongoose.model('card', cardSchema);
