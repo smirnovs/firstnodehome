@@ -6,12 +6,16 @@ const {
   getCards, getCard, createCard, deleteCard, likeCard, dislikeCard,
 } = require('../controllers/cards');
 
+const mainPage = (req, res) => {
+  res.send({ message: 'Здесь будет главная страница' });
+};
 
 const errorPage = (req, res) => {
   res.status(404);
   res.send({ message: 'Запрашиваемый ресурс не найден' });
 };
 
+router.get('/', mainPage);
 router.get('/users', getUsers);
 router.get('/users/:userId', getUser);
 router.post('/users', createUser);
@@ -25,6 +29,7 @@ router.post('/cards', createCard);
 router.delete('/cards/:cardId', deleteCard);
 router.put('/cards/:cardId/likes', likeCard);
 router.delete('/cards/:cardId/likes', dislikeCard);
-router.get('*', errorPage);
+
+router.use('*', errorPage);
 
 module.exports = router;

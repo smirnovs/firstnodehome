@@ -1,13 +1,13 @@
 const Card = require('../models/card');
 
 
-module.exports.getCards = (req, res) => {
+const getCards = (req, res) => {
   Card.find({})
     .then((users) => res.send({ data: users }))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
-module.exports.getCard = (req, res) => {
+const getCard = (req, res) => {
   const { cardId } = req.params;
   Card.find({ _id: cardId })
     .then((card) => res.send({ data: card }))
@@ -15,7 +15,7 @@ module.exports.getCard = (req, res) => {
 };
 
 
-module.exports.createCard = (req, res) => {
+const createCard = (req, res) => {
   const owner = req.user._id;
   const { name, link } = req.body;
   Card.create({ name, link, owner })
@@ -23,14 +23,14 @@ module.exports.createCard = (req, res) => {
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
-module.exports.deleteCard = (req, res) => {
+const deleteCard = (req, res) => {
   const { cardId } = req.params;
   Card.findByIdAndRemove(cardId)
     .then((user) => res.send({ data: user }))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
-module.exports.likeCard = (req, res) => {
+const likeCard = (req, res) => {
   const { cardId } = req.params;
   const owner = req.user._id;
   Card.findByIdAndUpdate(
@@ -42,7 +42,7 @@ module.exports.likeCard = (req, res) => {
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
-module.exports.dislikeCard = (req, res) => {
+const dislikeCard = (req, res) => {
   const { cardId } = req.params;
   const owner = req.user._id;
   Card.findByIdAndUpdate(
@@ -52,4 +52,8 @@ module.exports.dislikeCard = (req, res) => {
   )
     .then((user) => res.send({ data: user }))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+};
+
+module.exports = {
+  getCards, getCard, createCard, deleteCard, likeCard, dislikeCard,
 };

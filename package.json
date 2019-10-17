@@ -1,7 +1,7 @@
 {
   "name": "home_node",
   "version": "1.0.0",
-  "description": "",
+  "description": "13 homework with nide and mongo",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
