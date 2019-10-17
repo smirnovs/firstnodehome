@@ -1,57 +1,50 @@
 const Card = require('../models/card');
 
+const handleResponse = (req, res) => {
+  req
+    .then((card) => res.send({ data: card }))
+    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+};
 
 const getCards = (req, res) => {
-  Card.find({})
-    .then((users) => res.send({ data: users }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  handleResponse(Card.find({}), res);
 };
 
 const getCard = (req, res) => {
   const { cardId } = req.params;
-  Card.find({ _id: cardId })
-    .then((card) => res.send({ data: card }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  handleResponse(Card.find({ _id: cardId }), res);
 };
 
 
 const createCard = (req, res) => {
   const owner = req.user._id;
   const { name, link } = req.body;
-  Card.create({ name, link, owner })
-    .then((card) => res.send({ data: card }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  handleResponse(Card.create({ name, link, owner }), res);
 };
 
 const deleteCard = (req, res) => {
   const { cardId } = req.params;
-  Card.findByIdAndRemove(cardId)
-    .then((user) => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  handleResponse(Card.findByIdAndRemove(cardId), res);
 };
 
 const likeCard = (req, res) => {
   const { cardId } = req.params;
   const owner = req.user._id;
-  Card.findByIdAndUpdate(
+  handleResponse(Card.findByIdAndUpdate(
     cardId,
     { $addToSet: { likes: owner } },
     { new: true },
-  )
-    .then((user) => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  ), res);
 };
 
 const dislikeCard = (req, res) => {
   const { cardId } = req.params;
   const owner = req.user._id;
-  Card.findByIdAndUpdate(
+  handleResponse(Card.findByIdAndUpdate(
     cardId,
     { $pull: { likes: owner } },
     { new: true },
-  )
-    .then((user) => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  ), res);
 };
 
 module.exports = {

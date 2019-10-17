@@ -1,41 +1,37 @@
 const User = require('../models/user');
 
-const getUsers = (req, res) => {
-  User.find({})
+const handleResponse = (req, res) => {
+  req
     .then((users) => res.send({ data: users }))
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
+const getUsers = (req, res) => {
+  handleResponse(User.find({}), res);
+};
+
 const getUser = (req, res) => {
   const { userId } = req.params;
-  User.find({ _id: userId })
-    .then((users) => res.send({ data: users }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  handleResponse(User.find({ _id: userId }), res);
 };
 
 
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  handleResponse(User.create({ name, about, avatar }), res);
 };
 
 const updateUser = (req, res) => {
   const owner = req.user._id;
   const { name, about } = req.body;
-  User.findByIdAndUpdate(owner, { name, about })
-    .then((user) => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  handleResponse(User.findByIdAndUpdate(owner, { name, about }), res);
 };
 
 const updateAvatar = (req, res) => {
   const opts = { runValidators: true };
   const owner = req.user._id;
   const { avatar } = req.body;
-  User.findOneAndUpdate(owner, { avatar }, opts)
-    .then((user) => res.send({ data: user }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+  handleResponse(User.findOneAndUpdate(owner, { avatar }, opts), res);
 };
 
 module.exports = {

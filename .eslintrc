@@ -12,9 +12,3 @@
     "linebreak-style": 0
   }
 }
-// {
-//   "extends": "airbnb-base",
-//   "rules": {
-//     "no-underscore-dangle": "off"
-//   }
-// }
