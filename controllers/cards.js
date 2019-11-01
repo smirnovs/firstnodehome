@@ -43,11 +43,11 @@ const verifyUser = (req, res, currentUser) => {
     req.then((card) => {
       const cardOwner = card.owner.toString();
       if (cardOwner !== currentUser) {
+        res.status(403).send({ message: 'Не вы добавляли не вами и удалять' });
         reject(new Error('Не вы создавали не вам и удалять'));
-        // return;
       }
-      resolve('ecgtiyj');
-    }).catch((err) => console.log(err));
+    }).catch((err) => { throw err; });
+    // return reject();
   });
 };
 
@@ -58,17 +58,51 @@ const getCards = (req, res) => {
 const getCard = (req, res) => {
   const { cardId } = req.params;
   const currentUser = req.user._id;
-  verifyUser(Card.findOne({ _id: cardId }), res, currentUser)
-    .then(
-      handleResponse(Card.find({ _id: cardId }), res)
-    ).catch(() => { res.send({ message: 'Не вы добавляли не вами и удалять' }); });
-  // console.log(`запустил геткард: ${isDelete}`);
-  // verifyUser(cardId, res, currentUser);
-  // console.log(`после верификации, изделит: ${isDelete}`);
 
-  // console.log(`изделит не пропущен: ${isDelete}`);
-  // res.send({ message: 'Не вы добавляли не вами и удалять' });
+
+  //если появляется запрос на получение карточки, сначала запускаем верификацию. Ищем карточку
+
+  Card.findOne({ _id: cardId })
+    .then((card) => {
+      const cardOwner = card.owner.toString();
+      //сравниваем ID текущего юзера и создателя карточки
+      if (cardOwner !== currentUser) {
+        //если не совпадает, отправляем сообщение
+        res.status(403).send({ message: 'Не вы добавляли не вами и удалять' });
+        //и тут нужно прервать промис
+        return Promise.reject(new Error(''));
+        // reject(new Error('Не вы создавали не вам и удалять'));
+      }
+      //если совпадает, идет then и ищется нужная карточка
+    }).then(() => {
+      Card.find({
+        _id: cardId,
+      })
+        .then((card) => {
+          //показываем карточку
+          res.send({ data: card });
+          //catch при ошибке поиска карточки
+        }).catch((err) => { throw err; });
+      //catch при ошибке в верификации
+    }).catch((err) => { throw err; });
+
+
+  // verifyUser(Card.findOne({ _id: cardId }), res, currentUser)
+  //   .then(
+  //     handleResponse(Card.find({ _id: cardId }), res),
+  //   )
+  //   .catch((err) => { throw err; });
 };
+
+// const getCard = (req, res) => {
+//   const { cardId } = req.params;
+//   const currentUser = req.user._id;
+//   verifyUser(Card.findOne({ _id: cardId }), res, currentUser)
+//     .then(
+//       handleResponse(Card.find({ _id: cardId }), res),
+//     )
+//     .catch((err) => { throw err; });
+// };
 
 
 const createCard = (req, res) => {
