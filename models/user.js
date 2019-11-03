@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     minlength: 7,
-    // select: false,
+    select: false,
   },
 });
 
@@ -42,7 +42,7 @@ userSchema.path('avatar').validate((val) => {
 }, 'Аватар должен быть в виде ссылки на изображение.');
 
 userSchema.statics.findUserByCredentials = function (email, password) {
-  return this.findOne({ email })
+  return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error('Неправильные почта или пароль'));
