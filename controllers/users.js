@@ -14,7 +14,10 @@ const getUsers = (req, res) => {
 
 const getUser = (req, res) => {
   const { userId } = req.params;
-  handleResponse(User.find({ _id: userId }), res);
+  User.find({ _id: userId })
+  .then((users) => {
+      res.send({ data: users })    
+  }).catch(() => res.status(404).send({ message: 'Пользователь не найден' }));;
 };
 
 const login = (req, res) => {

@@ -32,7 +32,7 @@ const deleteCard = (req, res) => {
       //сравниваем ID текущего юзера и создателя карточки
       if (cardOwner !== currentUser) {
         //если не совпадает, отправляем сообщение
-        res.status(403).send({ message: 'Не вы добавляли не вами и удалять' });
+        res.status(403).send({ message: 'Отказано в доступе' });
         //и тут нужно прервать промис
         return Promise.reject(new Error(''));
         // reject(new Error('Не вы создавали не вам и удалять'));
@@ -46,7 +46,7 @@ const deleteCard = (req, res) => {
           //catch при ошибке поиска карточки
         }).catch((err) => { throw err; });
       //catch при ошибке в верификации
-    }).catch((err) => { throw err; });
+    }).catch(() => { res.status(404).send({ message: 'Карточка не найдена' }); });
 };
 
 const likeCard = (req, res) => {
