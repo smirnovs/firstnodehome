@@ -16,7 +16,11 @@ const getUser = (req, res) => {
   const { userId } = req.params;
   User.find({ _id: userId })
   .then((users) => {
-      res.send({ data: users })    
+    if(users.length <= 0) {
+      res.status(404).send({ message: 'Пользователь не найден' });
+    } else {
+      res.send({ data: users });
+    }
   }).catch(() => res.status(404).send({ message: 'Пользователь не найден' }));;
 };
 
