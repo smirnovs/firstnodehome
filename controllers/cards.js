@@ -3,7 +3,13 @@ const Card = require('../models/card');
 
 const handleResponse = (req, res) => {
   req
-    .then((card) => res.send({ data: card }))
+    .then((card) => {
+      if(card.length <=0) {
+        res.send({ message: "Карточек нет" })
+      } else {
+        res.send({ data: card })
+      }
+    })
     .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
 };
 
