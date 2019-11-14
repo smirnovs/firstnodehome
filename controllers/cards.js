@@ -1,30 +1,69 @@
 const Card = require('../models/card');
+const NotFoundError = require('../errors/not-found-err');
+const AccessDenied = require('../errors/access-denied');
+const SomeError = require('../errors/some-error');
 
-const handleResponse = (req, res) => {
+const handleResponse = (req, res, next) => {
   req
-    .then((card) => res.send({ data: card }))
-    .catch(() => res.status(500).send({ message: 'Произошла ошибка' }));
+    .then((card) => {
+      if (!card) {
+        throw new SomeError('Произошла ошибка');
+      }
+      res.send({ data: card });
+    })
+    .catch(next);
 };
 
 const getCards = (req, res) => {
   handleResponse(Card.find({}), res);
 };
 
-const getCard = (req, res) => {
+
+const getCard = (req, res, next) => {
   const { cardId } = req.params;
-  handleResponse(Card.find({ _id: cardId }), res);
+  Card.find({ _id: cardId })
+    .then((card) => {
+      if (card.length <= 0) {
+        throw new NotFoundError('Нет карточки с таким id');
+      } else {
+        res.send({ data: card });
+      }
+    }).catch(next);
 };
 
-
-const createCard = (req, res) => {
+const createCard = (req, res, next) => {
   const owner = req.user._id;
+  // if (!req.body.name || !req.body.link) {
+  //   next(new SomeError('Вы не указали название карточки или ссылку на нее'));
+  // } else {}
   const { name, link } = req.body;
   handleResponse(Card.create({ name, link, owner }), res);
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
-  handleResponse(Card.findByIdAndRemove(cardId), res);
+  const currentUser = req.user._id;
+  Card.findById(cardId).then((card) => {
+    if (!card) {
+      throw new NotFoundError('Нет карточки с таким id');
+    }
+    const cardOwner = card.owner.toString();
+    if (cardOwner !== currentUser) {
+      //  если не совпадает, отправляем сообщение
+      next(new AccessDenied('Отказано в доступе'));
+    } else {
+      Card.findByIdAndRemove(cardId)
+        .then((deletedCard) => {
+          if (!deletedCard) {
+            throw new SomeError('Не удалось удалить');
+          }
+          //  показываем карточку
+          res.send({ data: deletedCard });
+          //  catch при ошибке поиска карточки
+        })
+        .catch(next);
+    }
+  }).catch(next);
 };
 
 const likeCard = (req, res) => {
