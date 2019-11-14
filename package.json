@@ -1,11 +1,12 @@
 {
   "name": "home_node",
   "version": "1.0.0",
-  "description": "13 homework with nide and mongo",
+  "description": "13 homework with node and mongo",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "cross-env NODE_ENV=develop nodemon app.js",
+    "build": "nodemon app.js"
   },
   "author": "Alex",
   "license": "ISC",
@@ -18,10 +19,15 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
+    "celebrate": "^10.1.0",
     "cookie-parser": "^1.4.4",
+    "cross-env": "^6.0.3",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-winston": "^4.0.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.5",
-    "validator": "^12.0.0"
+    "validator": "^12.0.0",
+    "winston": "^3.2.1"
   }
 }
