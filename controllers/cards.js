@@ -33,9 +33,6 @@ const getCard = (req, res, next) => {
 
 const createCard = (req, res, next) => {
   const owner = req.user._id;
-  // if (!req.body.name || !req.body.link) {
-  //   next(new SomeError('Вы не указали название карточки или ссылку на нее'));
-  // } else {}
   const { name, link } = req.body;
   handleResponse(Card.create({ name, link, owner }), res);
 };
