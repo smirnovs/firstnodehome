@@ -31,7 +31,7 @@ const getCard = (req, res, next) => {
     }).catch(next);
 };
 
-const createCard = (req, res, next) => {
+const createCard = (req, res) => {
   const owner = req.user._id;
   const { name, link } = req.body;
   handleResponse(Card.create({ name, link, owner }), res);

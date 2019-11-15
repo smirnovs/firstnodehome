@@ -59,19 +59,13 @@ const createUser = (req, res, next) => {
     .catch(next);
 };
 
-const updateUser = (req, res, next) => {
-  // if (!req.body.name || !req.body.about) {
-  //   next(new SomeError('Вы неправильно указали имя или описание пользователя'));
-  // } else {}
+const updateUser = (req, res) => {
   const owner = req.user._id;
   const { name, about } = req.body;
   handleResponse(User.findByIdAndUpdate(owner, { name, about }), res);
 };
 
-const updateAvatar = (req, res, next) => {
-  // if (!req.body.avatar) {
-  //   next(new SomeError('Вы не указали ссылку на новый аватар'));
-  // } else {}
+const updateAvatar = (req, res) => {
   const opts = { runValidators: true };
   const owner = req.user._id;
 

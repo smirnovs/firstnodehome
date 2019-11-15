@@ -8,7 +8,7 @@ const handleAuthError = (res) => {
 
 const extractBearerToken = (header) => header.replace('Bearer ', '');
 
-module.exports = (req, res, next) => {
+module.exports = (req, res, next) => { // eslint-disable-line
   const { authorization } = req.headers;
   const { NODE_ENV, JWT_SECRET } = process.env;
   if (!authorization || !authorization.startsWith('Bearer ')) {

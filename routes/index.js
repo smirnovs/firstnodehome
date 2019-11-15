@@ -3,7 +3,7 @@ const cardsRoute = require('./cards');
 const usersRoute = require('./users');
 
 const mainPage = (req, res) => {
-  const { NODE_ENV, JWT_SECRET } = process.env;
+  const { NODE_ENV } = process.env;
   console.log(NODE_ENV);
   res.send({ message: NODE_ENV });
 };
