@@ -31,7 +31,7 @@ const getCard = (req, res, next) => {
     }).catch(next);
 };
 
-const createCard = (req, res, next) => {
+const createCard = (req, res) => {
   const owner = req.user._id;
   const { name, link } = req.body;
   handleResponse(Card.create({ name, link, owner }), res);
@@ -47,7 +47,8 @@ const deleteCard = (req, res, next) => {
     const cardOwner = card.owner.toString();
     if (cardOwner !== currentUser) {
       //  если не совпадает, отправляем сообщение
-      next(new AccessDenied('Отказано в доступе'));
+      // next(new AccessDenied('Отказано в доступе'));
+      throw new AccessDenied('Отказано в доступе');
     } else {
       Card.findByIdAndRemove(cardId)
         .then((deletedCard) => {

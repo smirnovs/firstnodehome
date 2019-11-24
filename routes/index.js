@@ -3,9 +3,8 @@ const cardsRoute = require('./cards');
 const usersRoute = require('./users');
 
 const mainPage = (req, res) => {
-  res.send({ message: 'Здесь будет главная страница' });
-  const { NODE_ENV, JWT_SECRET } = process.env;
-  console.log(NODE_ENV);
+  const { NODE_ENV } = process.env;
+  res.send({ message: NODE_ENV });
 };
 
 const errorPage = (req, res) => {
